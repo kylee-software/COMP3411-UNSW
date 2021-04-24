@@ -46,15 +46,23 @@ absorption(C1 <- B1, C2 <- B2, C1 <- B1Z, C2 <- B2Z) :-
     the other clause.
 */
 
-identification(C1 <- B1, C1 <- B2, C1 <- B1Z, Y <- Y1) :-
-    C1 == C1,
+identification(C1 <- B1, C2 <- B2, Z1 <- B1Z, Z2 <- B2Z) :-
+    C1 == C2,
     subtract(B2, B1, B),
+    subtract(B1, B2, D),
+    intersection(B1, B2, Z),
     (   length(B, 1)
-    ->  intersection(B1, B2, Z),
-        B = [X | _],
-        gensym(X, Y), 
-        append(Z, [Y], B1Z),
-        subtract(B1, Z, Y1)
+    ->  B = [X1 | _],
+        Z1 = C1,
+        Z2 = X1, 
+        B1Z = B2,
+        subtract(B1, Z, B2Z)
+    ;   length(D, 1)
+    ->  D = [X2 | _],
+        Z1 = X2,
+        B2Z = B1,
+        Z2 = C1,
+        subtract(B2, Z, B1Z)
     ;   false).
    
 
